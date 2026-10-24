@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import logoImg from "../../assets/Logo-transparent.png";
+import logoImg from "../../assets/Logo.png";
 
 interface HeaderProps {
   isLoaded?: boolean;
@@ -180,8 +180,8 @@ const Header: React.FC<HeaderProps> = ({
       <header
         ref={headerRef}
         className={`fixed top-0 left-0 w-full z-40 transition-all duration-400 select-none ${isScrolled
-            ? "py-4 sm:py-5 bg-[#0e0e0e]/80 backdrop-blur-md"
-            : "py-6 sm:py-8 bg-transparent"
+          ? "py-4 sm:py-5 bg-[#0e0e0e]/80 backdrop-blur-md"
+          : "py-6 sm:py-8 bg-transparent"
           }`}
       >
         <div className="w-full max-w-8xl mx-auto px-6 sm:px-12 md:px-20 flex items-center justify-between">

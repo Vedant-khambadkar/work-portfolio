@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { useRef, useState, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
-import logoImg from "../../assets/Logo-transparent.png";
+import logoImg from "../../assets/Logo.png";
 
 interface LoaderProps {
   onComplete?: () => void;
