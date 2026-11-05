@@ -15,6 +15,8 @@ import Client from "./components/pages/ClientReviews/Client";
 import Header from "./components/header/Header";
 import SocialSidebar from "./components/social/SocialSidebar";
 import Loader from "./components/loader/Loader";
+import Footer from "./components/pages/Footer/Footer";
+import Contact from "./components/pages/Contact/Contact";
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
@@ -63,7 +65,7 @@ function App() {
   }, []);
 
   return (
-    <main className="w-full min-h-screen overflow-x-hidden relative selection:bg-[#f25536] selection:text-white">
+    <main className="w-full min-h-screen overflow-x-hidden relative selection:bg-[#f25536] selection:">
       <Loader onComplete={() => setIsLoaded(true)} />
       {/* ── ONE UNIFIED CURSOR FOLLOWER FOR ENTIRE SITE ── */}
       <CursorFollower hidden={cursorHidden || !isLoaded} />
@@ -76,6 +78,11 @@ function App() {
 
       {/* Hero Section */}
       <Hero isLoaded={isLoaded} onHoverChange={setCursorHidden} />
+      
+      {/* Work / Projects Showcase Section */}
+      <WorkShowcase onHoverChange={setCursorHidden} />
+
+      <WhatICanDo onHoverChange={setCursorHidden} />
 
       {/* About Section */}
       <About onHoverChange={setCursorHidden} />
@@ -84,16 +91,18 @@ function App() {
       <Experience onHoverChange={setCursorHidden} />
 
       {/* What I Can Do Section */}
-      <WhatICanDo onHoverChange={setCursorHidden} />
-
-      {/* Work / Projects Showcase Section */}
-      <WorkShowcase onHoverChange={setCursorHidden} />
 
       {/* Client Section */}
       <Client onHoverChange={setCursorHidden} />
 
       {/* Client Reviews Section */}
       <ClientReviews onHoverChange={setCursorHidden} />
+
+      {/* Contact Section ("just send it." Refokus style) */}
+      <Contact onHoverChange={setCursorHidden} />
+
+      {/* Footer Section (NOTHIN' big text animation) */}
+      <Footer onHoverChange={setCursorHidden} />
     </main>
   );
 }

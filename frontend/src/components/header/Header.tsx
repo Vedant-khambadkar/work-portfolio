@@ -18,13 +18,11 @@ const NAV_ITEMS = [
 const Header: React.FC<HeaderProps> = ({
   isLoaded = true,
   onHoverChange,
-  onContactClick,
 }) => {
   const headerRef = useRef<HTMLElement>(null);
   const navContainerRef = useRef<HTMLDivElement>(null);
   const navMaskRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   const BUFFER = 100;
 
@@ -147,29 +145,6 @@ const Header: React.FC<HeaderProps> = ({
     { scope: headerRef }
   );
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-
-    if (href === "#contact") {
-      if (onContactClick) {
-        onContactClick();
-      } else {
-        const contactEl = document.getElementById("contact");
-        if (contactEl) {
-          contactEl.scrollIntoView({ behavior: "smooth" });
-        } else {
-          setContactModalOpen(true);
-        }
-      }
-      return;
-    }
-
-    const targetEl = document.querySelector(href);
-    if (targetEl) {
-      targetEl.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   const handleLogoClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -217,7 +192,6 @@ const Header: React.FC<HeaderProps> = ({
                 <a
                   key={item.label}
                   href={item.href}
-                  onClick={(e) => handleLinkClick(e, item.href)}
                   className="animate-header-item block py-0.5 text-xs sm:text-[13px] font-bold tracking-[0.14em] uppercase text-[#b7ab98] transition-transform duration-200 hover:-translate-x-1 will-change-transform"
                 >
                   {item.label}
@@ -256,72 +230,6 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
       </header>
-
-      {/* ── MINIMAL CONTACT POPUP / DRAWER (Triggered by CONTACT link) ── */}
-      {contactModalOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setContactModalOpen(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fadeIn"
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            onMouseEnter={() => onHoverChange?.(true)}
-            onMouseLeave={() => onHoverChange?.(false)}
-            className="w-full max-w-lg bg-[#121212] border border-white/10 p-6 sm:p-8 rounded-sm shadow-2xl relative"
-          >
-            <div className="flex items-center justify-between pb-6 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#f25536] animate-pulse" />
-                <h3 className="text-xs font-mono tracking-widest uppercase text-zinc-400">
-                  GET IN TOUCH
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setContactModalOpen(false)}
-                aria-label="Close contact dialog"
-                className="text-xs font-mono text-zinc-500 hover:text-white transition-colors cursor-pointer px-2 py-1"
-              >
-                [ CLOSE ✕ ]
-              </button>
-            </div>
-
-            <div className="py-6 space-y-4">
-              <p className="text-sm leading-relaxed text-zinc-300">
-                Interested in working together or exploring a new project? Reach
-                out directly or drop a message below.
-              </p>
-
-              <div className="p-4 bg-white/3 border border-white/5 rounded-xs space-y-2 font-mono text-xs">
-                <div className="flex justify-between items-center">
-                  <span className="text-zinc-500">EMAIL</span>
-                  <a
-                    href="mailto:contact@vedant.dev"
-                    className="text-white hover:text-[#f25536] transition-colors"
-                  >
-                    contact@vedant.dev
-                  </a>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-zinc-500">LOCATION</span>
-                  <span className="text-zinc-300">Available Worldwide</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
-              <a
-                href="mailto:contact@vedant.dev"
-                className="px-6 py-2.5 bg-[#f25536] text-white font-semibold text-xs tracking-wider uppercase hover:bg-[#ff694b] transition-colors shadow-lg"
-              >
-                Send Email ↗
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

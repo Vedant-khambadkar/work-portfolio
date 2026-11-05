@@ -15,7 +15,7 @@ const LAYER1_PARTS: TextPart[] = [
 
 const LAYER2_PARTS: TextPart[] = [
   { text: "Turning ambitious ideas into" },
-  { text: " digital experiences", className: "text-white font-bold" },
+  { text: " digital experiences", className: " font-bold" },
   { text: "that make an impact ." },
 ];
 

@@ -15,7 +15,7 @@ const LAYER1_PARTS: TextPart[] = [
 
 const LAYER2_PARTS: TextPart[] = [
   { text: "I combine" },
-  { text: "AI-powered tools", className: "text-white font-bold" },
+  { text: "AI-powered tools", className: " font-bold" },
   { text: "with creative development to build innovative digital experiences, generate visual assets, and bring interactive ideas to life." },
 ];
 

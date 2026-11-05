@@ -15,7 +15,7 @@ const BASE_PARTS: TextPart[] = [
 
 const REVEALED_PARTS: TextPart[] = [
   { text: "Experienced in leveraging" },
-  { text: "AI tools to accelerate development", className: "text-white font-bold" },
+  { text: "AI tools to accelerate development", className: " font-bold" },
   { text: "generate creative assets, streamline workflows, and build innovative, AI-powered web experiences." },
 ];
 

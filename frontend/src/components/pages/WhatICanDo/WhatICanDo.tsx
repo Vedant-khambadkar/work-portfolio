@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -120,6 +120,14 @@ const WhatICanDo = ({ onHoverChange }: WhatICanDoProps) => {
   const toggleItem = (idx: number) => {
     setActiveItem((prev) => (prev === idx ? null : idx));
   };
+
+  // Refresh ScrollTrigger when accordion finishes expanding/collapsing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 520);
+    return () => clearTimeout(timer);
+  }, [activeItem]);
 
   useGSAP(
     () => {
@@ -275,10 +283,14 @@ const WhatICanDo = ({ onHoverChange }: WhatICanDoProps) => {
     return (
       <div className="flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-6 w-full">
         {/* Col 1: Number + Subtitle */}
-        <div className="w-14 sm:w-20 md:w-24 shrink-0">
+        <div className="w-14 sm:w-20 md:w-30 shrink-0 px-3">
           <span className="block overflow-hidden">
             <span
-              className={`animate-text block will-change-transform text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight ${isAI ? "text-[#0c0c0c]" : ""
+              className={`animate-text block will-change-transform text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAI
+                ? "text-[#0c0c0c]"
+                : isOpen
+                  ? "text-[#ea583a]"
+                  : "text-zinc-500 group-hover:text-zinc-300"
                 }`}
             >
               {item.number}
@@ -287,7 +299,11 @@ const WhatICanDo = ({ onHoverChange }: WhatICanDoProps) => {
           {subtitle && (
             <div className="overflow-hidden">
               <p
-                className={`animate-text will-change-transform text-xs leading-relaxed mt-2 hidden sm:block ${isAI ? "text-[#0c0c0c]/70" : "text-zinc-500"
+                className={`animate-text will-change-transform text-xs leading-relaxed mt-2 hidden sm:block transition-colors duration-500 ${isAI
+                  ? "text-[#0c0c0c]/70"
+                  : isOpen
+                    ? "text-zinc-400"
+                    : "text-zinc-600 group-hover:text-zinc-500"
                   }`}
               >
                 {subtitle}
@@ -300,86 +316,132 @@ const WhatICanDo = ({ onHoverChange }: WhatICanDoProps) => {
         <div className="w-full sm:w-[42%] md:w-[44%] shrink-0 pr-4 lg:pr-8">
           <span className="block overflow-hidden">
             <h3
-              className={`animate-text block will-change-transform text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-black uppercase tracking-tight leading-[1.08] ${isAI ? "text-[#0c0c0c]" : ""
+              className={`animate-text block will-change-transform text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-black uppercase tracking-tight leading-[1.08] transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAI
+                ? "text-[#0c0c0c]"
+                : isOpen
+                  ? ""
+                  : "text-zinc-300 group-hover:"
                 }`}
             >
               {title}
             </h3>
           </span>
 
-          {/* Action Button when Open */}
-          {isOpen && (
-            <div className="mt-8 relative inline-block">
-              <div className="relative p-0.5">
-                <span
-                  className={`absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 ${isAI ? "border-black" : "border-white"
-                    }`}
-                />
-                <span
-                  className={`absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 ${isAI ? "border-black" : "border-white"
-                    }`}
-                />
-                <span
-                  className={`absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 ${isAI ? "border-black" : "border-white"
-                    }`}
-                />
-                <span
-                  className={`absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b-2 border-r-2 ${isAI ? "border-black" : "border-white"
-                    }`}
-                />
-
+          {/* Action Button: Smooth Accordion Animation */}
+          <div
+            className="accordion-content-grid"
+            style={{
+              gridTemplateRows: isOpen ? "1fr" : "0fr",
+              opacity: isOpen ? 1 : 0,
+              pointerEvents: isOpen ? "auto" : "none",
+            }}
+          >
+            <div className="overflow-hidden min-h-0">
+              <div className="pt-6 sm:pt-8">
                 <div
-                  className={`font-black text-[11px] sm:text-xs tracking-wider uppercase px-5 py-2.5 shadow-md ${isAI
-                    ? "bg-[#0c0c0c] "
-                    : "bg-white text-[#0e0e0e]"
+                  className={`relative inline-block transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? "translate-y-0" : "-translate-y-3"
                     }`}
                 >
-                  {buttonText}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.location.href = `mailto:contactvedantbuilds@gmail.com?subject=Project%20Request:%20${encodeURIComponent(title)}`;
+                    }}
+                    className="relative p-0.5 group/btn cursor-pointer block text-left"
+                  >
+                    <span
+                      className={`absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 transition-transform duration-200 group-hover/btn:-translate-x-0.5 group-hover/btn:-translate-y-0.5 ${isAI ? "border-black" : "border-white"
+                        }`}
+                    />
+                    <span
+                      className={`absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 ${isAI ? "border-black" : "border-white"
+                        }`}
+                    />
+                    <span
+                      className={`absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 transition-transform duration-200 group-hover/btn:-translate-x-0.5 group-hover/btn:translate-y-0.5 ${isAI ? "border-black" : "border-white"
+                        }`}
+                    />
+                    <span
+                      className={`absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b-2 border-r-2 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:translate-y-0.5 ${isAI ? "border-black" : "border-white"
+                        }`}
+                    />
+
+                    <div
+                      className={`font-black text-[11px] sm:text-xs tracking-wider uppercase px-5 py-2.5 shadow-md transition-all duration-200 group-hover/btn:scale-[1.02] active:scale-[0.98] ${isAI
+                        ? "bg-[#0c0c0c] "
+                        : "bg-white text-[#0e0e0e] group-hover/btn:bg-[#ea583a] group-hover/btn:"
+                        }`}
+                    >
+                      {buttonText}
+                    </div>
+                  </button>
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
 
-        {/* Col 3: Description Paragraph(s) */}
+        {/* Col 3: Description Paragraph(s) + Expandable Details */}
         <div className="flex-1 min-w-0 pr-4 mt-2 sm:mt-0">
           <div className="overflow-hidden">
             <p
-              className={`animate-text will-change-transform text-sm sm:text-base leading-relaxed ${isAI ? "text-[#0c0c0c] font-semibold" : "text-zinc-300"
+              className={`animate-text will-change-transform text-sm sm:text-base leading-relaxed transition-colors duration-500 ${isAI
+                ? "text-[#0c0c0c] font-semibold"
+                : isOpen
+                  ? "text-zinc-100"
+                  : "text-zinc-400 group-hover:text-zinc-300"
                 }`}
             >
               {description}
             </p>
           </div>
 
-          {isOpen && details && (
+          {/* Details: Smooth Accordion Animation */}
+          {details && (
             <div
-              className={`mt-6 space-y-3 pt-4 border-t ${isAI ? "border-black/20" : "border-zinc-800/80"
-                }`}
+              className="accordion-content-grid"
+              style={{
+                gridTemplateRows: isOpen ? "1fr" : "0fr",
+                opacity: isOpen ? 1 : 0,
+                pointerEvents: isOpen ? "auto" : "none",
+              }}
             >
-              {details.map((detail, dIdx) => (
-                <p
-                  key={dIdx}
-                  className={`text-xs sm:text-sm leading-relaxed ${isAI ? "text-[#0c0c0c]/85" : "text-zinc-400"
-                    }`}
+              <div className="overflow-hidden min-h-0">
+                <div
+                  className={`mt-6 space-y-3 pt-4 border-t transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? "translate-y-0" : "-translate-y-3"
+                    } ${isAI ? "border-black/20" : "border-zinc-800/80"}`}
                 >
-                  {detail}
-                </p>
-              ))}
+                  {details.map((detail, dIdx) => (
+                    <p
+                      key={dIdx}
+                      className={`text-xs sm:text-sm leading-relaxed transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 -translate-y-2"
+                        } ${isAI ? "text-[#0c0c0c]/85" : "text-zinc-400"}`}
+                      style={{
+                        transitionDelay: isOpen ? `${dIdx * 60 + 80}ms` : "0ms",
+                      }}
+                    >
+                      {detail}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>
 
         {/* Col 4: Arrow Indicator */}
-        <div className="w-8 sm:w-10 shrink-0 flex justify-end pt-1">
+        <div className="w-8 sm:w-10 shrink-0 flex justify-end pt-1 px-5">
           <span
-            className={`inline-flex items-center justify-center text-xl sm:text-2xl font-bold transition-all duration-300 ${isAI
+            className={`inline-flex items-center justify-center text-xl sm:text-2xl font-bold transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isAI
               ? isOpen
                 ? "text-[#0c0c0c] rotate-0 scale-125"
-                : "text-[#0c0c0c]/50 rotate-90"
+                : "text-[#0c0c0c]/50 rotate-90 scale-100"
               : isOpen
                 ? " rotate-0 scale-125"
-                : "text-zinc-500 rotate-90"
+                : "text-zinc-500 rotate-90 scale-100 group-hover:text-zinc-300"
               }`}
           >
             ↗
@@ -422,7 +484,8 @@ const WhatICanDo = ({ onHoverChange }: WhatICanDoProps) => {
                 <div
                   key={item.id}
                   onClick={() => toggleItem(idx)}
-                  className="group border-b border-zinc-800 py-8 sm:py-12 transition-colors duration-300 hover:bg-zinc-900/30 cursor-pointer"
+                  className={`group border-b border-zinc-800 py-8 sm:py-12 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer ${isOpen ? "bg-zinc-900/35" : "hover:bg-zinc-900/15"
+                    }`}
                 >
                   {/* CSS GRID ROW SIZER: guarantees Layer 1 and Layer 2 have the exact same row height */}
                   <div className="grid grid-cols-1 grid-rows-1 w-full">
@@ -470,7 +533,7 @@ const WhatICanDo = ({ onHoverChange }: WhatICanDoProps) => {
                 return (
                   <div
                     key={item.id}
-                    className="border-b border-black/25 py-8 sm:py-12 pointer-events-none select-none"
+                    className="border-b border-black/25 py-8 sm:py-12 pointer-events-none select-none transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                   >
                     {/* CSS GRID ROW SIZER: guarantees Layer 2 has the exact same row height as Layer 1 */}
                     <div className="grid grid-cols-1 grid-rows-1 w-full">

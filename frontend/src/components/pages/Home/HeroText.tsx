@@ -270,13 +270,13 @@ const HeroText = ({
           {baseText || (
             <>
               <span className="block overflow-hidden">
-                <span className="animate-text hero-line block will-change-transform">I BUILD THINGS</span>
+                <span className="animate-text hero-line block will-change-transform">BEYOND</span>
               </span>
               <span className="block overflow-hidden">
-                <span className="animate-text hero-line block will-change-transform">FOR THE DIGITAL</span>
+                <span className="animate-text hero-line block will-change-transform">ORDINARY BUILT IN </span>
               </span>
               <span className="block overflow-hidden">
-                <span className="animate-text hero-line block will-change-transform">WORLD.</span>
+                <span className="animate-text hero-line block will-change-transform">3D.</span>
               </span>
             </>
           )}
@@ -290,13 +290,13 @@ const HeroText = ({
           {revealedText || (
             <>
               <span className="block overflow-hidden">
-                <span className="block">I BUILD DIGITAL</span>
+                <span className="block">DIGITAL</span>
               </span>
               <span className="block overflow-hidden">
-                <span className="block">EXPERIENCES BEYOND</span>
+                <span className="block">EXPERIENCES</span>
               </span>
               <span className="block overflow-hidden">
-                <span className="block">THE ORDINARY.</span>
+                <span className="block">REIMAGINED.</span>
               </span>
             </>
           )}
@@ -324,13 +324,13 @@ const HeroText = ({
             {revealedText || (
               <>
                 <span className="block overflow-hidden">
-                  <span className="animate-text hero-line block will-change-transform">I BUILD DIGITAL</span>
+                  <span className="animate-text hero-line block will-change-transform">DIGITAL</span>
                 </span>
                 <span className="block overflow-hidden">
-                  <span className="animate-text hero-line block will-change-transform">EXPERIENCES BEYOND</span>
+                  <span className="animate-text hero-line block will-change-transform">EXPERIENCES</span>
                 </span>
                 <span className="block overflow-hidden">
-                  <span className="animate-text hero-line block will-change-transform">THE ORDINARY.</span>
+                  <span className="animate-text hero-line block will-change-transform">REIMAGINED.</span>
                 </span>
               </>
             )}
